@@ -6,21 +6,32 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/User.entity';
 import { Roll } from './entities/Roll.entity';
+import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import { DataSource, Repository } from 'typeorm';
 
 @Module({
-  imports: [UserModule,
+  imports: [Repository<User>, UserModule,
+    JwtModule.register({
+      global: true,
+      secret: 'SECRET_KEY',
+      signOptions: { expiresIn: '600s' },
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
-      port: 5432,
-      username: 'admin',
-      password: 'admin',
-      database: 'ecom',
+      port: 5431,
+      username: 'postgres',
+      password: 'password',
+      database: 'postgres',
       entities: [User, Roll],
       synchronize: true
-    })
+    }),
+    AuthModule
   ],
   controllers: [AppController, UserController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private dataSource: DataSource) {}
+}

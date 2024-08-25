@@ -1,4 +1,4 @@
 export enum Rolls {
-    ADMIN,
-    CUSTOMER
+    ADMIN = 'ADMIN',
+    CUSTOMER = 'CUSTOMER'
 }

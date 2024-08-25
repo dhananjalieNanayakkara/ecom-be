@@ -14,6 +14,8 @@ export class UserController {
 
     @Post('/login')
     async userLogin(@Body() req: UserLoginDto){
-        
+        const res = await this.userService.userLogin(req);
+        return res;
     }
+
 }
